@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * Team Setup Script for Expense Management System
+ * Environment Setup Script for Expense Management System
  * 
- * This script helps new team members get started quickly by:
+ * This script helps get started quickly by:
  * 1. Checking if required files exist
  * 2. Setting up environment variables
  * 3. Installing dependencies
@@ -14,7 +14,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-console.log('🚀 Setting up Expense Management System for team development...\n');
+console.log('🚀 Setting up Expense Management System for local development...\n');
 
 // Check if we're in the right directory
 if (!fs.existsSync('package.json')) {

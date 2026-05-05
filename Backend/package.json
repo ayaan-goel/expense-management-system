@@ -10,7 +10,7 @@
     "seed": "node scripts/seedData.js",
     "setup": "npm run init-db && npm run seed",
     "reset": "rm -f database.sqlite && npm run setup",
-    "team-setup": "node setup-team.js"
+    "env-setup": "node setup-env.js"
   },
   "dependencies": {
     "axios": "^1.5.0",

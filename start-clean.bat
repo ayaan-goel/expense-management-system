@@ -17,7 +17,7 @@ timeout /t 3 /nobreak >nul
 echo.
 echo Starting Backend Server (Port 5000)...
 echo ========================================
-start "Backend Server" cmd /k "cd /d \"E:\expense tracker\Backend\" && echo Starting Backend... && npm start"
+start "Backend Server" cmd /k "cd /d \"%~dp0Backend\" && echo Starting Backend... && npm start"
 
 echo.
 echo Waiting 8 seconds for backend to initialize...
@@ -26,7 +26,7 @@ timeout /t 8 /nobreak >nul
 echo.
 echo Starting Frontend Server (Port 3001)...
 echo ========================================
-start "Frontend Server" cmd /k "cd /d \"E:\expense tracker\Frontend\" && echo Starting Frontend... && npm run dev"
+start "Frontend Server" cmd /k "cd /d \"%~dp0Frontend\" && echo Starting Frontend... && npm run dev"
 
 echo.
 echo ========================================

@@ -391,15 +391,15 @@ Use the provided demo accounts to test different user roles and workflows:
 6. Monitor logs and set up error tracking
 7. Consider using process managers like PM2
 
-## Git and Team Collaboration
+## Local Development & Troubleshooting
 
 ### Package Management
 
-This project uses npm with `package-lock.json` committed to the repository for consistent dependency versions across all team members.
+This project uses npm with `package-lock.json` committed to the repository for consistent dependency versions.
 
-**Important for team members:**
+**Important:**
 ```bash
-# Always use npm ci for clean installs (recommended for CI/CD and team collaboration)
+# Always use npm ci for clean installs
 npm ci
 
 # Only use npm install when adding new dependencies
@@ -426,16 +426,6 @@ git commit -m "Add new dependency: package-name"
    npm run setup  # Initialize database and seed data
    ```
 
-3. **Development workflow:**
-   ```bash
-   git checkout -b feature/your-feature-name
-   # Make your changes
-   git add .
-   git commit -m "Add feature: description"
-   git push origin feature/your-feature-name
-   # Create pull request
-   ```
-
 ### Files Ignored by Git
 
 - `node_modules/` - Dependencies (will be installed via `npm ci`)
@@ -446,15 +436,15 @@ git commit -m "Add new dependency: package-name"
 - OS-specific files (`Thumbs.db`, `.DS_Store`, etc.)
 - Log files and temporary files
 
-### Important Notes for Team
+### Important Notes
 
 - **Never commit sensitive data** like API keys, passwords, or database files
 - **Always test locally** before pushing: `npm start` should work without errors
-- **Database**: Each team member has their own local SQLite database
+- **Database**: Local SQLite database
 - **Uploads**: Uploaded files are ignored; use seed data for testing
 - **Environment**: Copy `.env.example` to `.env` and set your own values
 
-### Troubleshooting Team Issues
+### Troubleshooting
 
 **Different node_modules causing issues:**
 ```bash
@@ -462,7 +452,7 @@ rm -rf node_modules package-lock.json
 npm install
 ```
 
-**Database issues between team members:**
+**Database issues:**
 ```bash
 rm -f database.sqlite
 npm run setup
