@@ -1,0 +1,955 @@
+{
+  "info": {
+    "name": "Expense Tracker API",
+    "description": "Complete API collection for testing Expense Tracker backend\n\nTest Credentials:\n- Admin: admin@techcorp.com / password123\n- Manager: john.manager@techcorp.com / password123\n- Employee: alice.employee@techcorp.com / password123",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "🏥 Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        },
+        "description": "Check if the server is running and healthy"
+      }
+    },
+    {
+      "name": "📋 API Documentation",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api-docs",
+          "host": ["{{baseUrl}}"],
+          "path": ["api-docs"]
+        },
+        "description": "Get API documentation and available endpoints"
+      }
+    },
+    {
+      "name": "🔐 Authentication",
+      "item": [
+        {
+          "name": "Admin Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.to.have.status(200)) {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.environment.set('adminToken', responseJson.token);",
+                  "    pm.environment.set('adminUserId', responseJson.user.id);",
+                  "    console.log('Admin token saved:', responseJson.token.substring(0, 20) + '...');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@techcorp.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Login as admin user and save token"
+          }
+        },
+        {
+          "name": "Manager Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.to.have.status(200)) {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.environment.set('managerToken', responseJson.token);",
+                  "    pm.environment.set('managerUserId', responseJson.user.id);",
+                  "    console.log('Manager token saved:', responseJson.token.substring(0, 20) + '...');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john.manager@techcorp.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Login as manager user and save token"
+          }
+        },
+        {
+          "name": "Employee Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.to.have.status(200)) {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.environment.set('employeeToken', responseJson.token);",
+                  "    pm.environment.set('employeeUserId', responseJson.user.id);",
+                  "    console.log('Employee token saved:', responseJson.token.substring(0, 20) + '...');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"alice.employee@techcorp.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Login as employee user and save token"
+          }
+        },
+        {
+          "name": "User Signup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"testuser@techcorp.com\",\n  \"password\": \"password123\",\n  \"countryCode\": \"US\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/signup",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "signup"]
+            },
+            "description": "Create a new user account"
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            },
+            "description": "Get current user information"
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"password123\",\n  \"newPassword\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/password",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "password"]
+            },
+            "description": "Change user password"
+          }
+        }
+      ]
+    },
+    {
+      "name": "👥 User Management (Admin Only)",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/users?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "users"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get all users with pagination (admin only)"
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"New Employee\",\n  \"email\": \"newemployee@techcorp.com\",\n  \"role\": \"employee\",\n  \"manager_id\": 9\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "users"]
+            },
+            "description": "Create a new user (admin only)"
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Employee Name\",\n  \"role\": \"employee\",\n  \"manager_id\": 9,\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/users/:userId",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "users", ":userId"],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": "11",
+                  "description": "User ID to update"
+                }
+              ]
+            },
+            "description": "Update user details (admin only)"
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/users/:userId",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "users", ":userId"],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": "11",
+                  "description": "User ID to delete"
+                }
+              ]
+            },
+            "description": "Deactivate user (admin only)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "💰 Expenses",
+      "item": [
+        {
+          "name": "Get All Expenses",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/expenses?page=1&limit=10&status=all",
+              "host": ["{{baseUrl}}"],
+              "path": ["expenses"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "status",
+                  "value": "all",
+                  "description": "Filter by status: draft, submitted, waiting_approval, approved, rejected, all"
+                }
+              ]
+            },
+            "description": "Get expenses (employees see own, managers see team, admin sees all)"
+          }
+        },
+        {
+          "name": "Get Expense by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/expenses/:expenseId",
+              "host": ["{{baseUrl}}"],
+              "path": ["expenses", ":expenseId"],
+              "variable": [
+                {
+                  "key": "expenseId",
+                  "value": "11",
+                  "description": "Expense ID"
+                }
+              ]
+            },
+            "description": "Get specific expense details"
+          }
+        },
+        {
+          "name": "Create Expense",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.to.have.status(201)) {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.environment.set('newExpenseId', responseJson.expense.id);",
+                  "    console.log('New expense created with ID:', responseJson.expense.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 89.50,\n  \"currency\": \"USD\",\n  \"category\": \"Meals\",\n  \"description\": \"Business lunch with potential client\",\n  \"expense_date\": \"2025-01-04\",\n  \"remarks\": \"Discussed potential partnership opportunities\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/expenses",
+              "host": ["{{baseUrl}}"],
+              "path": ["expenses"]
+            },
+            "description": "Create a new expense"
+          }
+        },
+        {
+          "name": "Update Expense",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 95.75,\n  \"description\": \"Updated: Business lunch with potential client\",\n  \"remarks\": \"Updated remarks: Discussed potential partnership and follow-up meeting scheduled\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/expenses/{{newExpenseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["expenses", "{{newExpenseId}}"]
+            },
+            "description": "Update expense (only draft expenses can be updated)"
+          }
+        },
+        {
+          "name": "Submit Expense",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{newExpenseId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/expenses/{{newExpenseId}}/submit",
+              "host": ["{{baseUrl}}"],
+              "path": ["expenses", "{{newExpenseId}}", "submit"]
+            },
+            "description": "Submit expense for approval"
+          }
+        },
+        {
+          "name": "Get My Expenses",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/expenses/my?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["expenses", "my"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get current user's expenses"
+          }
+        },
+        {
+          "name": "Get Pending Expenses (Manager)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{managerToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/expenses/pending?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["expenses", "pending"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get expenses pending approval (manager/admin only)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "✅ Approvals",
+      "item": [
+        {
+          "name": "Approve Expense",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{managerToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"approve\",\n  \"comments\": \"Approved - expense looks reasonable and well documented\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/approval/:requestId/approve",
+              "host": ["{{baseUrl}}"],
+              "path": ["approval", ":requestId", "approve"],
+              "variable": [
+                {
+                  "key": "requestId",
+                  "value": "1",
+                  "description": "Approval request ID"
+                }
+              ]
+            },
+            "description": "Approve an expense"
+          }
+        },
+        {
+          "name": "Reject Expense",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{managerToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"reject\",\n  \"comments\": \"Rejected - insufficient documentation provided\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/approval/:requestId/reject",
+              "host": ["{{baseUrl}}"],
+              "path": ["approval", ":requestId", "reject"],
+              "variable": [
+                {
+                  "key": "requestId",
+                  "value": "2",
+                  "description": "Approval request ID"
+                }
+              ]
+            },
+            "description": "Reject an expense"
+          }
+        },
+        {
+          "name": "Escalate Expense",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{managerToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"escalate\",\n  \"comments\": \"Escalating to admin due to high amount\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/approval/:requestId/escalate",
+              "host": ["{{baseUrl}}"],
+              "path": ["approval", ":requestId", "escalate"],
+              "variable": [
+                {
+                  "key": "requestId",
+                  "value": "3",
+                  "description": "Approval request ID"
+                }
+              ]
+            },
+            "description": "Escalate an expense to higher authority"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔧 Admin",
+      "item": [
+        {
+          "name": "Get Approval Rules",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/rules?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "rules"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get approval rules (admin only)"
+          }
+        },
+        {
+          "name": "Create Approval Rule",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Entertainment Approval\",\n  \"description\": \"Special approval rule for entertainment expenses\",\n  \"rule_type\": \"hybrid\",\n  \"percentage_threshold\": 200.00,\n  \"specific_approver_id\": 8,\n  \"is_manager_approver\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/rules",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "rules"]
+            },
+            "description": "Create new approval rule (admin only)"
+          }
+        },
+        {
+          "name": "Create Approval Sequence",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"approval_rule_id\": 1,\n  \"approvers\": [\n    {\n      \"approver_id\": 9,\n      \"sequence_order\": 1,\n      \"is_required\": true\n    },\n    {\n      \"approver_id\": 8,\n      \"sequence_order\": 2,\n      \"is_required\": true\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/sequences",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "sequences"]
+            },
+            "description": "Create approval sequence (admin only)"
+          }
+        },
+        {
+          "name": "Admin Override Expense",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"approve\",\n  \"comments\": \"Admin override: Approved due to exceptional circumstances\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/expenses/:expenseId/override",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "expenses", ":expenseId", "override"],
+              "variable": [
+                {
+                  "key": "expenseId",
+                  "value": "11",
+                  "description": "Expense ID"
+                }
+              ]
+            },
+            "description": "Admin override for expense approval/rejection"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔍 OCR",
+      "item": [
+        {
+          "name": "Parse Receipt",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "receipt",
+                  "type": "file",
+                  "src": "sample-receipt.jpg",
+                  "description": "Receipt image file"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ocr/process",
+              "host": ["{{baseUrl}}"],
+              "path": ["ocr", "process"]
+            },
+            "description": "Upload and parse receipt using OCR"
+          }
+        },
+        {
+          "name": "Get OCR Result",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ocr/results/:ocrId",
+              "host": ["{{baseUrl}}"],
+              "path": ["ocr", "results", ":ocrId"],
+              "variable": [
+                {
+                  "key": "ocrId",
+                  "value": "1",
+                  "description": "OCR result ID"
+                }
+              ]
+            },
+            "description": "Get OCR processing result"
+          }
+        },
+        {
+          "name": "Create Expense from OCR",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 45.50,\n  \"currency\": \"USD\",\n  \"category\": \"Meals\",\n  \"description\": \"Business lunch extracted from receipt\",\n  \"expense_date\": \"2025-01-04\",\n  \"remarks\": \"Created from OCR data\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ocr/create-expense/:ocrId",
+              "host": ["{{baseUrl}}"],
+              "path": ["ocr", "create-expense", ":ocrId"],
+              "variable": [
+                {
+                  "key": "ocrId",
+                  "value": "1",
+                  "description": "OCR result ID"
+                }
+              ]
+            },
+            "description": "Create expense from OCR data"
+          }
+        },
+        {
+          "name": "Get OCR Stats (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ocr/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["ocr", "stats"]
+            },
+            "description": "Get OCR processing statistics (admin only)"
+          }
+        },
+        {
+          "name": "Get All OCR Results (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ocr/results?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["ocr", "results"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get all OCR results (admin only)"
+          }
+        },
+        {
+          "name": "Reprocess OCR (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ocr/reprocess/:ocrId",
+              "host": ["{{baseUrl}}"],
+              "path": ["ocr", "reprocess", ":ocrId"],
+              "variable": [
+                {
+                  "key": "ocrId",
+                  "value": "1",
+                  "description": "OCR result ID"
+                }
+              ]
+            },
+            "description": "Reprocess failed OCR result (admin only)"
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "app": "Expense Approval System",
+  "roles": ["admin","manager","employee"],
+  "pages": {
+    "login": { "fields": ["email","password"] },
+    "employee": {
+      "components": [
+        {"type":"table","columns":["id","date","category","amount","status","actions"]},
+        {"type":"modal","name":"expenseForm","fields":["category","amount","date","description","attachment","saveDraft","submit"]}
+      ]
+    },
+    "manager": {
+      "components": [
+        {"type":"table","columns":["id","employeeName","category","amount","submittedOn","actionsApproveReject","comments"]}
+      ]
+    },
+    "admin": {
+      "components": [
+        {"type":"userTable","columns":["name","email","role","manager","actions"]},
+        {"type":"rulesPanel","fields":["amountThreshold","ruleType","managerId","enabled"]}
+      ]
+    }
+  }
+}
