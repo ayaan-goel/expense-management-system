@@ -7,7 +7,7 @@ echo.
 
 echo Starting Backend Server...
 echo ========================================
-start "Backend Server" cmd /k "cd /d \"%~dp0Backend\" && npm start"
+start "Backend Server" cmd /k "cd /d "%~dp0Backend" && npm start"
 
 echo.
 echo Waiting 5 seconds for backend to initialize...
@@ -16,7 +16,7 @@ timeout /t 5 /nobreak > nul
 echo.
 echo Starting Frontend Server...
 echo ========================================
-start "Frontend Server" cmd /k "cd /d \"%~dp0Frontend\" && npm run dev"
+start "Frontend Server" cmd /k "cd /d "%~dp0Frontend" && npm run dev"
 
 echo.
 echo ========================================
